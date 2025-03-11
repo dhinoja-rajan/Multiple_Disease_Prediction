@@ -4,12 +4,12 @@ import numpy as np
 
 # Load models
 models = {
-    "Heart Disease": joblib.load("./saved_models/heart_disease_model.pkl"),
-    "Breast Cancer": joblib.load("./saved_models/breast_cancer_model.pkl"),
-    "Liver Disease": joblib.load("./saved_models/liver_disease_model.pkl"),
-    "Kidney Disease": joblib.load("./saved_models/kidney_disease_model.pkl"),
-    "Diabetes": joblib.load("./saved_models/diabetes_model.pkl"),
-    "Parkinson's Disease": joblib.load("parkinsons_model.pkl"),
+    "Breast Cancer": joblib.load("./saved_models/BREAST_CANCER_Prediction_Model.pkl"),
+    "Diabetes": joblib.load("./saved_models/DIABETES_Disease_Prediction_Model.pkl"),
+    "Heart Disease": joblib.load("./saved_models/HEART_Disease_Prediction_Model.pkl"),
+    "Liver Disease": joblib.load("./saved_models/LIVER_Disease_Prediction_Model.pkl"),
+    "Kidney Disease": joblib.load("./saved_models/KIDNEY_Disease_Prediction_Model.pkl"),
+    "Parkinson's Disease": joblib.load("./saved_models/PARKINSON_Disease_Prediction_Model.pkl"),
 }
 
 # Input fields for different diseases
