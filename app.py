@@ -4,11 +4,11 @@ import numpy as np
 
 # Load models
 models = {
-    "Heart Disease": joblib.load("heart_disease_model.pkl"),
-    "Breast Cancer": joblib.load("breast_cancer_model.pkl"),
-    "Liver Disease": joblib.load("liver_disease_model.pkl"),
-    "Kidney Disease": joblib.load("kidney_disease_model.pkl"),
-    "Diabetes": joblib.load("diabetes_model.pkl"),
+    "Heart Disease": joblib.load("./saved_models/heart_disease_model.pkl"),
+    "Breast Cancer": joblib.load("./saved_models/breast_cancer_model.pkl"),
+    "Liver Disease": joblib.load("./saved_models/liver_disease_model.pkl"),
+    "Kidney Disease": joblib.load("./saved_models/kidney_disease_model.pkl"),
+    "Diabetes": joblib.load("./saved_models/diabetes_model.pkl"),
     "Parkinson's Disease": joblib.load("parkinsons_model.pkl"),
 }
 
