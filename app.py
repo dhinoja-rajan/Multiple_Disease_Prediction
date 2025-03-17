@@ -2,19 +2,7 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 import numpy as np
 import joblib
-import os
 
-# Get the absolute path o the working directory
-working_dir = os.path.dirname(os.path.abspath(__file__))
-
-# from pages import (
-#     breast_cancer_prediction,
-#     diabetes_disease_prediction,
-#     heart_disease_prediction,
-#     kidney_disease_prediction,
-#     liver_disease_prediction,
-#     parkinson_disease_prediction,
-# )
 
 breast_cancer_model = joblib.load("./saved_models/BREAST_CANCER_Prediction_Model.pkl")
 breast_cancer_scaler = joblib.load("./saved_models/breast_cancer_scaler.pkl")
@@ -68,7 +56,178 @@ with st.sidebar:
 
 # Routing
 if selected == "Home":
-    st.title("Multiple Disease Prediction System")
+    # st.title("Multiple Disease Prediction System")
+    # Custom Background (Using Markdown and CSS)
+    st.markdown(
+        """
+        <style>
+            body {
+                background-color: #F4F4F4;
+                font-family: 'Arial', sans-serif;
+            }
+            .big-title {
+                font-size: 40px;
+                font-weight: bold;
+                color: blue;
+                text-align: center;
+            }
+            .subtext {
+                font-size: 18px;
+                color: #555;
+                text-align: center;
+            }
+            .quiz-title {
+                font-size: 36px;
+                font-weight: bold;
+                color: #ff5733;
+                text-align: center;
+            }
+            .quiz-subtitle {
+                font-size: 18px;
+                color: #555;
+                text-align: center;
+            }
+            .question {
+                font-size: 22px;
+                font-weight: bold;
+                margin-top: 20px;
+            }
+            .option {
+                font-size: 18px;
+                color: #333;
+            }
+            .correct {
+                color: #4CAF50;
+                # font-weight: bold;
+            }
+            .incorrect {
+                color: #FF0000;
+                # font-weight: bold;
+            }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    st.markdown(
+        '<p class="big-title">🔬 AI-Powered Disease Prediction</p>',
+        unsafe_allow_html=True,
+    )
+
+    st.markdown(
+        '<p class="subtext">Predict multiple diseases using AI & ML with just a few inputs!</p>',
+        unsafe_allow_html=True,
+    )
+
+    # Divider Line
+    st.markdown("---")
+
+    # Disease Statistics
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.metric("🩸 Heart Disease", "17.9M deaths/year", "Leading cause worldwide")
+        st.markdown("---")
+    with col2:
+        st.metric("🎗️ Breast Cancer", "2.3M cases/year", "Most common cancer")
+        st.markdown("---")
+    with col3:
+        st.metric("🦠 Kidney Disease", "850M cases/year", "A growing concern")
+        st.markdown("---")
+    with col1:
+        st.metric("🦠 Diabetes", "8.5M cases/year", "Worldwide epidemic")
+    with col2:
+        st.metric("🩸 Liver Disease", "1.2M cases/year", "Leading cause worldwide")
+    with col3:
+        st.metric("🧠 Parkinson's Disease", "400K cases/year", "Worldwide epidemic")
+
+    st.markdown("---")
+
+    # Title and subtitle
+    st.markdown('<p class="quiz-title">🧠 AI Health Quiz</p>', unsafe_allow_html=True)
+    st.markdown(
+        '<p class="quiz-subtitle">Test your knowledge about health and diseases!</p>',
+        unsafe_allow_html=True,
+    )
+
+    # Dictionary of questions and answers
+    questions = {
+        "What is the normal range of blood pressure": {
+            "options": ["120/80 mmHg", "150/100 mmHg", "90/60 mmHg"],
+            "answer": "120/80 mmHg",
+        },
+        "Which organ is affected by Parkinson's disease": {
+            "options": ["Liver", "Brain", "Heart"],
+            "answer": "Brain",
+        },
+        "What is a common symptom of kidney disease": {
+            "options": ["Fever", "Swelling in legs", "Skin rash"],
+            "answer": "Swelling in legs",
+        },
+        "Which type of diabetes occurs due to insulin resistance": {
+            "options": ["Type 1", "Type 2", "Gestational"],
+            "answer": "Type 2",
+        },
+        "What is the most common type of cancer in women": {
+            "options": ["Lung Cancer", "Breast Cancer", "Ovarian Cancer"],
+            "answer": "Breast Cancer",
+        },
+    }
+
+    # Track user responses
+    user_answers = {}
+
+    # Loop through each question
+    for question, details in questions.items():
+        st.markdown(
+            f'<span class="question"> {question}❓</span>', unsafe_allow_html=True
+        )
+
+        # Add a placeholder option for user to select
+        options = ["Select an option"] + details["options"]
+        selected_option = st.radio("", options, key=question, index=0)
+
+        if selected_option != "Select an option":
+            user_answers[question] = selected_option
+
+        # st.markdown("---")
+        st.markdown("<br><br>", unsafe_allow_html=True)
+
+    # Submit Button
+    if st.button("Submit Quiz"):
+        if len(user_answers) < len(questions):
+            st.warning("⚠️ Please answer all questions before submitting!")
+        else:
+            score = 0
+            st.markdown("<hr>", unsafe_allow_html=True)
+            for question, details in questions.items():
+                if user_answers[question] == details["answer"]:
+                    st.markdown(
+                        f'<p class="correct">✅ {question} - Correct!</p>',
+                        unsafe_allow_html=True,
+                    )
+                    score += 1
+                else:
+                    st.markdown(
+                        f'<span class="incorrect">❌ {question} - Incorrect.</span> <span style="color: grey;"> The correct answer is "{details["answer"]}".</span>',
+                        unsafe_allow_html=True,
+                    )
+
+            # Final Score Display
+            st.markdown(
+                f"<h3 style='text-align: center;'>🎉 Your Score: {score}/{len(questions)} 🎯</h3>",
+                unsafe_allow_html=True,
+            )
+
+            # Try Again Button
+            if st.button("🔄 Try Again"):
+                st.experimental_rerun()
+    st.markdown("---")
+
+    # Call to Action
+    st.markdown("### 🏥 Select a disease from the sidebar to start predicting!")
+    st.markdown("---")
+
 
 elif selected == "Breast Cancer Prediction":
     # breast_cancer_prediction.breast_cancer_prediction()
@@ -211,7 +370,6 @@ elif selected == "Breast Cancer Prediction":
             st.error("High risk of breast cancer!")
         else:
             st.success("No significant breast cancer detected.")
-
 
 elif selected == "Diabetes Disease Prediction":
     # diabetes_disease_prediction.diabetes_disease_prediction()
