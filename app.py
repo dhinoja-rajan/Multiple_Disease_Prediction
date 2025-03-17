@@ -13,9 +13,6 @@ diabetes_scaler = joblib.load("./saved_models/diabetes_scaler.pkl")
 heart_model = joblib.load("./saved_models/HEART_Disease_Prediction_Model.pkl")
 heart_scaler = joblib.load("./saved_models/heart_disease_scaler.pkl")
 
-kidney_model = joblib.load("./saved_models/KIDNEY_Disease_Prediction_Model.pkl")
-kidney_scaler = joblib.load("./saved_models/kidney_disease_scaler.pkl")
-
 liver_model = joblib.load("./saved_models/LIVER_Disease_Prediction_Model.pkl")
 liver_scaler = joblib.load("./saved_models/liver_disease_scaler.pkl")
 
@@ -37,7 +34,6 @@ with st.sidebar:
             "Breast Cancer Prediction",
             "Diabetes Disease Prediction",
             "Heart Disease Prediction",
-            "Kidney Disease Prediction",
             "Liver Disease Prediction",
             "Parkinson's Disease Prediction",
         ],
@@ -48,7 +44,6 @@ with st.sidebar:
             "activity",
             "heart-fill",
             "droplet-fill",
-            "plus",
             "person-fill",
         ],
         default_index=0,
@@ -79,7 +74,7 @@ if selected == "Home":
             .quiz-title {
                 font-size: 36px;
                 font-weight: bold;
-                color: #ff5733;
+                color: violet;
                 text-align: center;
             }
             .quiz-subtitle {
@@ -132,13 +127,11 @@ if selected == "Home":
         st.metric("🎗️ Breast Cancer", "2.3M cases/year", "Most common cancer")
         st.markdown("---")
     with col3:
-        st.metric("🦠 Kidney Disease", "850M cases/year", "A growing concern")
+        st.metric("🦠 Diabetes", "8.5M cases/year", "Worldwide epidemic")
         st.markdown("---")
     with col1:
-        st.metric("🦠 Diabetes", "8.5M cases/year", "Worldwide epidemic")
-    with col2:
         st.metric("🩸 Liver Disease", "1.2M cases/year", "Leading cause worldwide")
-    with col3:
+    with col2:
         st.metric("🧠 Parkinson's Disease", "400K cases/year", "Worldwide epidemic")
 
     st.markdown("---")
@@ -159,10 +152,6 @@ if selected == "Home":
         "Which organ is affected by Parkinson's disease": {
             "options": ["Liver", "Brain", "Heart"],
             "answer": "Brain",
-        },
-        "What is a common symptom of kidney disease": {
-            "options": ["Fever", "Swelling in legs", "Skin rash"],
-            "answer": "Swelling in legs",
         },
         "Which type of diabetes occurs due to insulin resistance": {
             "options": ["Type 1", "Type 2", "Gestational"],
@@ -379,7 +368,7 @@ elif selected == "Diabetes Disease Prediction":
     st.markdown("### Enter details below to predict diabetes risk")
 
     # --- User Inputs ---
-    pregnancies = st.number_input("Number o Pregnancies", min_value=0, max_value=20)
+    pregnancies = st.number_input("Number of Pregnancies", min_value=0, max_value=20)
     glucose = st.number_input("Glucose Level", min_value=50, max_value=250)
     bp = st.number_input("Blood Pressure", min_value=30, max_value=200)
     skin_thickness = st.number_input("Skin Thickness", min_value=0, max_value=100)
@@ -395,11 +384,11 @@ elif selected == "Diabetes Disease Prediction":
         input_data = np.array(
             [[pregnancies, glucose, bp, skin_thickness, insulin, bmi, dp, age]]
         )
-        input_data_scaled = diabetes_scaler.transorm(input_data)
+        input_data_scaled = diabetes_scaler.transform(input_data)
         prediction = diabetes_model.predict(input_data_scaled)[0]
 
         if prediction == 1:
-            st.error("High risk o diabetes!")
+            st.error("High risk of diabetes!")
         else:
             st.success("No signiicant diabetes detected.")
 
@@ -475,105 +464,6 @@ elif selected == "Heart Disease Prediction":
             st.error("High risk of heart disease!")
         else:
             st.success("No significant heart disease detected.")
-
-elif selected == "Kidney Disease Prediction":
-    # kidney_disease_prediction.kidney_disease_prediction()
-
-    st.title("Kidney Disease Prediction Web App")
-    st.markdown("### Enter details below to predict kidney disease risk")
-
-    # --- User Inputs ---
-    age = st.number_input("Age", min_value=0, max_value=100)
-    bp = st.number_input("Blood Pressure", min_value=50, max_value=200)
-    sg = st.number_input(
-        "Specific Gravity", min_value=1.000, max_value=1.050, step=0.001
-    )
-    al = st.number_input("Albumin", min_value=0, max_value=5)
-    su = st.number_input("Sugar", min_value=0, max_value=5)
-    rbc = st.selectbox("Red Blood Cells", ["Normal", "Abnormal"])
-    pc = st.selectbox("Pus Cells", ["Normal", "Abnormal"])
-    pcc = st.selectbox("Pus Cell Clumps", ["No", "Yes"])
-    ba = st.selectbox("Bacteria", ["No", "Yes"])
-    bgr = st.number_input("Blood Glucose Random", min_value=50, max_value=500)
-    bu = st.number_input("Blood Urea", min_value=1, max_value=300)
-    sc = st.number_input("Serum Creatinine", min_value=0.1, max_value=20.0, step=0.1)
-    sod = st.number_input("Serum Sodium", min_value=100, max_value=200)
-    pot = st.number_input("Serum Potassium", min_value=2.0, max_value=10.0, step=0.1)
-    hemo = st.number_input("Hemoglobin", min_value=5.0, max_value=20.0, step=0.1)
-    pcv = st.number_input("Packed Cell Volume", min_value=10, max_value=60)
-    wbcc = st.number_input("White Blood Cell Count", min_value=2000, max_value=20000)
-    rbcc = st.number_input(
-        "Red Blood Cell Count", min_value=2.0, max_value=8.0, step=0.1
-    )
-    htn = st.selectbox("Hypertension", ["No", "Yes"])
-    dm = st.selectbox("Diabetes Mellitus", ["No", "Yes"])
-    cad = st.selectbox("Coronary Artery Disease", ["No", "Yes"])
-    appet = st.selectbox("Appetite", ["Good", "Poor"])
-    pe = st.selectbox("Pedal Edema", ["No", "Yes"])
-    ane = st.selectbox("Anemia", ["No", "Yes"])
-
-    # --- Categorical Mapping ---
-    rbc_map = {"Normal": 0, "Abnormal": 1}
-    pc_map = {"Normal": 0, "Abnormal": 1}
-    pcc_map = {"No": 0, "Yes": 1}
-    ba_map = {"No": 0, "Yes": 1}
-    htn_map = {"No": 0, "Yes": 1}
-    dm_map = {"No": 0, "Yes": 1}
-    cad_map = {"No": 0, "Yes": 1}
-    appet_map = {"Good": 0, "Poor": 1}
-    pe_map = {"No": 0, "Yes": 1}
-    ane_map = {"No": 0, "Yes": 1}
-
-    rbc = rbc_map[rbc]
-    pc = pc_map[pc]
-    pcc = pcc_map[pcc]
-    ba = ba_map[ba]
-    htn = htn_map[htn]
-    dm = dm_map[dm]
-    cad = cad_map[cad]
-    appet = appet_map[appet]
-    pe = pe_map[pe]
-    ane = ane_map[ane]
-
-    # --- Predict Kidney Disease ---
-    if st.button("Predict Kidney Disease"):
-        input_data = np.array(
-            [
-                [
-                    age,
-                    bp,
-                    sg,
-                    al,
-                    su,
-                    rbc,
-                    pc,
-                    pcc,
-                    ba,
-                    bgr,
-                    bu,
-                    sc,
-                    sod,
-                    pot,
-                    hemo,
-                    pcv,
-                    wbcc,
-                    rbcc,
-                    htn,
-                    dm,
-                    cad,
-                    appet,
-                    pe,
-                    ane,
-                ]
-            ]
-        )
-        input_data_scaled = kidney_scaler.transform(input_data)
-        prediction = kidney_model.predict(input_data_scaled)[0]
-
-        if prediction == 1:
-            st.error("High risk of kidney disease!")
-        else:
-            st.success("No significant kidney disease detected.")
 
 elif selected == "Liver Disease Prediction":
     # liver_disease_prediction.liver_disease_prediction()
